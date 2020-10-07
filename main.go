@@ -36,9 +36,9 @@ func main() {
 	fmt.Println("Address: \t", address, "\t valor: ", binaryToInt(address[:]))
 	fmt.Println("Mask:    \t", mask, "\t valor: ", binaryToInt(mask[:]))
 	fmt.Println("WildCard: \t", wildCard, "\t valor: ", binaryToInt(wildCard[:]))
-	fmt.Println("Broadcast: \t", broadcast, "\t valor: ", binaryToInt(broadcast[:]))
 	fmt.Println("FirstHost: \t", stringToBinary(firstHost), "\t valor: ", firstHost)
 	fmt.Println("LastHost: \t", stringToBinary(lastHost), "\t valor: ", lastHost)
+	fmt.Println("Broadcast: \t", broadcast, "\t valor: ", binaryToInt(broadcast[:]))
 	fmt.Println("\t\t----------------------------------- ")
 
 	//fmt.Printf("Ingrese Categoria (A,B,C) \n")
@@ -97,9 +97,9 @@ func host(net string, address []string, salto int, octeto int, carry bool) (int,
 	fmt.Println("Address: \t", address, "\t valor: ", binaryToInt(addressInString[:]))
 	fmt.Println("Mask:    \t", mask, "\t valor: ", binaryToInt(mask[:]))
 	fmt.Println("WildCard: \t", wildCard, "\t valor: ", binaryToInt(wildCard[:]))
-	fmt.Println("Broadcast: \t", broadcast, "\t valor: ", binaryToInt(broadcast[:]))
 	fmt.Println("First Host: \t", stringToBinary(firstHost), "\t valor: ", firstHost)
 	fmt.Println("Last Host: \t", stringToBinary(ultimoHost), "\t valor: ", ultimoHost)
+	fmt.Println("Broadcast: \t", broadcast, "\t valor: ", binaryToInt(broadcast[:]))
 	return int(jump), addressInString
 }
 
