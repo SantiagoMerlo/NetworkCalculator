@@ -6,3 +6,6 @@
 * Dockeriza
 * Terminal with Color
 * More flexible
+
+
+* cuando tenemos la misma red repetida, es la ultima direccion de subred mas 2 (porque uno es el broadcast y 2 es la primera direccion de red)

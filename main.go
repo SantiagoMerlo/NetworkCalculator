@@ -48,26 +48,36 @@ func main() {
 	fmt.Printf("\nIngrese subred 1 \n")
 	net1, _ := reader.ReadString('\n')
 	salto := 0
-	salto, address = host(net1, address[:], 0, 2)
+	salto, address = host(net1, address, 0, 2, false)
 
 	fmt.Printf("Ingrese subred 2 \n")
 	net2, _ := reader.ReadString('\n')
-	salto, address = host(net2, address[:], salto, 2)
+	salto, address = host(net2, address, salto, 2, false)
 
 	fmt.Printf("Ingrese subred 3-1 \n")
 	net3, _ := reader.ReadString('\n')
-	salto, address = host(net3, address[:], salto, 3)
+	if net2 == net3 {
+		salto, address = host(net3, address, salto, 3, true)
+		fmt.Printf("El Ultimo host y broadcast estan mal. se le tiene que sumar al first host la cantidad de host disponibles")
+		fmt.Printf("A partir de este punto pueden estar mal los calculos")
+	} else {
+		salto, address = host(net3, address, salto, 3, false)
+	}
 
 	fmt.Printf("Ingrese subred 3-2 \n")
 	net4, _ := reader.ReadString('\n')
-	salto, address = host(net4, address[:], salto, 3)
+	if net3 == net4 {
+		salto, address = host(net4, address, salto, 3, true)
+		fmt.Printf("El Ultimo host y broadcast estan mal. se le tiene que sumar al first host la cantidad de host disponibles")
+	} else {
+		salto, address = host(net4, address, salto, 3, false)
+	}
 
 }
 
-func host(net string, address []string, salto int, octeto int) (int, [4]string) {
+func host(net string, address []string, salto int, octeto int, carry bool) (int, []string) {
 	fmt.Println("\n\t\t-----------------------------------")
 	addressSubred := addAddress(2, address, salto)
-	addressInString := stringToBinary(addressSubred)
 	number, _ := strconv.Atoi(net[:len(net)-1]) //eliminacion del '\n'
 	subnet := math.RoundToEven(math.Log2(float64(number + 2)))
 	fmt.Println("Cantidad de host disponibles: \t", (math.Pow(2, subnet) - 2))
@@ -77,6 +87,10 @@ func host(net string, address []string, salto int, octeto int) (int, [4]string) 
 	jump := 256 - preJump
 	fmt.Println("Salto: \t\t\t\t", jump)
 	wildCard := inverse(mask[:])
+	if carry {
+		addressSubred = addAddress(3, stringToBinary(addressSubred), int((math.Pow(2, subnet))-1))
+	}
+	addressInString := stringToBinary(addressSubred)
 	broadcast := orBinary(addressInString[:], wildCard[:])
 	firstHost := addAddress(3, addressInString[:], 1)
 	ultimoHost := maxHost(broadcast[:])
@@ -173,7 +187,7 @@ func maskForNumber(number int) [4]string {
 	return response
 }
 
-func stringToBinary(str string) [4]string {
+func stringToBinary(str string) []string {
 
 	temp := ""
 	var response [4]string
@@ -195,8 +209,7 @@ func stringToBinary(str string) [4]string {
 			temp = temp + string(char)
 		}
 	}
-
-	return response
+	return response[:]
 }
 
 func andBinary(str1 []string, str2 []string) [4]string {
@@ -274,7 +287,7 @@ func inverse(mask []string) [4]string {
 	return response
 }
 
-func clase(addres [4]string) string {
+func clase(addres []string) string {
 	value := valueForArray(0, addres[:])
 	if value < 128 {
 		return "A"
